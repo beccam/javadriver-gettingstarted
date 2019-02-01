@@ -39,6 +39,19 @@ PreparedStatement prepared  = session.prepare(
         session.execute(bound);
 ```
 ## Query Builder
+```
+Insert insert = insertInto("users")
+                .value("firstname", literal("Cornelia"))
+                .value("lastname", literal("Grimsmo"))
+                .value("age", literal(26))
+                .value("email", literal("cornelia@example.com"))
+                .value("city", literal("Oslo"));
+
+
+        SimpleStatement statement = insert.build();
+
+        session.execute(statement);
+```
 
 ## Batch Statements
 
