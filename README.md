@@ -17,9 +17,9 @@ This porject was created with IntelliJ and uses Maven to manage dependencies. Yo
 
 ## Connect to your Cassandra cluster
 
-The entry point to your Cassandra cluster is through the CqlSession
+The entry point to your Cassandra cluster is through the `CqlSession`
 
-CqlSession session = CqlSession.builder().build();
+`CqlSession session = CqlSession.builder().build();`
 
 ## Simple Statements
 
