@@ -14,3 +14,18 @@ This porject was created with IntelliJ and uses Maven to manage dependencies. Yo
             <artifactId>java-driver-query-builder</artifactId>
             <version>4.0.0-beta3</version>
         </dependency>
+
+## Connect to your Cassandra cluster
+
+The entry point to your Cassandra cluster is through the CqlSession
+
+CqlSession session = CqlSession.builder().build();
+
+## Simple Statements
+
+## Prepared Statements
+
+## Query Builder
+
+## Batch Statements
+
