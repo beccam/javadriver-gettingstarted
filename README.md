@@ -28,7 +28,7 @@ The entry point to your Cassandra cluster is through the `CqlSession`
 `session.execute("update users set age = 37 where lastname = 'Jones'");`
 
 ## Prepared Statements
-
+```
 PreparedStatement prepared  = session.prepare(
 
                 "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
@@ -37,7 +37,7 @@ PreparedStatement prepared  = session.prepare(
         BoundStatement bound = prepared.bind("Hudson", 40, "Santa Fe", "kate@example.com", "Kate");
 
         session.execute(bound);
-
+```
 ## Query Builder
 
 ## Batch Statements
