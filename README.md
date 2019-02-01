@@ -23,7 +23,7 @@ CqlSession session = CqlSession.builder().build();
 ```
 
 ## Simple Statements
-Use SimpleStatement for queries that will be executed only once (or just a few times). It is a simple implementation built directly from a character string. 
+In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. Use SimpleStatement for queries that will be executed only once (or just a few times). It is a simple implementation built directly from a character string. 
 
 `session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");`
 
@@ -61,6 +61,7 @@ Insert insert = insertInto("users")
 ```
 
 ## Batch Statements
+Use BatchStatement to execute a set of queries as an atomic operation. Batches can contain any combination of simple statements and bound statements.
 ```java
 SimpleStatement simpleInsert =
                 SimpleStatement.newInstance(
