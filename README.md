@@ -23,9 +23,9 @@ The entry point to your Cassandra cluster is through the `CqlSession`
 
 ## Simple Statements
 
-```session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");
+`session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");`
 
-session.execute("update users set age = 37 where lastname = 'Jones'");```
+`session.execute("update users set age = 37 where lastname = 'Jones'");`
 
 ## Prepared Statements
 
