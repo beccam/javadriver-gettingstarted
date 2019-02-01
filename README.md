@@ -2,7 +2,7 @@
 This repository was created as a guide to help Apache Cassandra users get started with the Datastax Java Driver
 
 ## Overview
-This porject was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Qurty Builder libraries 
+This project was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Qurty Builder libraries to your POM file.
 
      <dependency>
             <groupId>com.datastax.oss</groupId>
@@ -19,7 +19,9 @@ This porject was created with IntelliJ and uses Maven to manage dependencies. Yo
 
 The entry point to your Cassandra cluster is through the `CqlSession`
 
-`CqlSession session = CqlSession.builder().build();`
+```java
+CqlSession session = CqlSession.builder().build();
+```
 
 ## Simple Statements
 
