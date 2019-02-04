@@ -14,12 +14,22 @@ This project was created with IntelliJ and uses Maven to manage dependencies. Yo
             <artifactId>java-driver-query-builder</artifactId>
             <version>4.0.0-beta3</version>
         </dependency>
+        
+The `users.cql` file provides the schema used for this project.
 
 ## Connect to your Cassandra cluster
 
 The entry point to your Cassandra cluster is through the `CqlSession`. It holds the known state of the actual Cassandra cluster, and is what you use to execute queries.`CqlSession.builder()` provides a fluent API to create an instance programmatically. 
 ```java
 CqlSession session = CqlSession.builder().build();
+```
+the `application.conf` file contains driver configurations (and defaults that we want to override). Here is where we set the
+`demo` keyspace we will be connecting to with our session.
+
+```
+datastax-java-driver {
+  basic.session-keyspace = demo
+}
 ```
 
 ## Simple Statements
