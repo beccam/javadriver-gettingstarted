@@ -1,19 +1,9 @@
-package drivertest;
+package com.datastax.drivertest;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.datastax.oss.driver.api.core.cql.BatchType;
 
-import static com.datastax.oss.driver.api.core.cql.BatchType.*;
 import static com.datastax.oss.driver.api.core.cql.DefaultBatchType.LOGGED;
-
-import com.datastax.oss.driver.api.querybuilder.insert.*;
-
-
-
-import static com.datastax.oss.driver.api.querybuilder.QueryBuilderDsl.*;
 
 public class Batches {
 

@@ -1,4 +1,4 @@
-package drivertest;
+package com.datastax.drivertest;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.*;
