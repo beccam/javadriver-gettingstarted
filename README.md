@@ -2,7 +2,7 @@
 This repository was created as a guide to help Apache Cassandra users get started with the Datastax Java Driver
 
 ## Overview
-This project was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Qurty Builder libraries to your POM file. 
+For this demo, we’re going to be creating a simple console application. This project was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Querty Builder libraries in your POM file. 
 
      <dependency>
             <groupId>com.datastax.oss</groupId>
@@ -19,7 +19,7 @@ The `users.cql` file provides the schema used for this project.
 
 ## Connect to your Cassandra cluster
 
-The entry point to your Cassandra cluster is through the `CqlSession`. It holds the known state of the actual Cassandra cluster, and is what you use to execute queries.`CqlSession.builder()` provides a fluent API to create an instance programmatically. 
+The entry point to your Cassandra cluster is through the `CqlSession`. It holds the known state of the actual Cassandra cluster, and is what you use to execute queries.`CqlSession.builder()` provides a fluent API to create an instance programmatically. Get a session connecting to the “demo” keyspace. To the `getSession()` method, add:
 ```java
 CqlSession session = CqlSession.builder().build();
 ```
@@ -33,64 +33,121 @@ datastax-java-driver {
 ```
 
 ## Simple Statements
-In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. Use SimpleStatement for queries that will be executed only once (or just a few times). It is a simple implementation built directly from a character string. 
+In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. You can use SimpleStatement for queries that will be executed only once.  Now that you are connected to the “demo” keyspace, let’s insert a user into the “users” table. Add the following lines of code to the main method.
+```
+// Insert one record into the users table
+session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");
+```
 
-`session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");`
+Using the Java driver, we can easily pull the user back out 
 
-`session.execute("update users set age = 37 where lastname = 'Jones'");`
+```
+// Use select to get the user we just entered
+ResultSet rs = session.execute("SELECT * FROM users WHERE lastname='Jones'");
+for (Row row : rs) {
+System.out.format("%s %d\n", row.getString("firstname"), row.getInt("age"));
+}
+```
+
+Perhaps it is the user's birthday, so we are going to update their age.
+```
+// Update the same user with a new age
+session.execute("update users set age = 36 where lastname = 'Jones'");
+// Select and show the change
+results = session.execute("select * from users where lastname='Jones'");
+for (Row row : results) {
+System.out.format("%s %d\n", row.getString("firstname"), row.getInt("age"));
+}
+```
+
+Now let’s delete Bob from the table. Then we can print out all the rows. You’ll notice that Bob’s information no longer comes back after being deleted (others might, if you have inserted users previously).
+```
+// Delete the user from the users table
+session.execute("DELETE FROM users WHERE lastname = 'Jones'");
+// Show that the user is gone
+results = session.execute("SELECT * FROM users");
+for (Row row : results) {
+System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),  row.getString("city"), row.getString("email"), row.getString("firstname"));
+}
+```
+
+
 
 ## Prepared Statements
 Use prepared statements for queries that are executed multiple times in your application. When you prepare the statement, Cassandra parses the query string, caches the result and returns a unique identifier (the PreparedStatement object keeps an internal reference to that identifier).
 ```java
+// Insert one record into the users table
 PreparedStatement prepared  = session.prepare(
 
                 "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
                         + "VALUES (?,?,?,?,?);");
 
-        BoundStatement bound = prepared.bind("Hudson", 40, "Santa Fe", "kate@example.com", "Kate");
+        BoundStatement bound = prepared.bind("Walsh", 40, "Santa Fe", "kate@example.com", "Kate");
 
         session.execute(bound);
 ```
 ## Query Builder
-The query builder is a utility to generate CQL queries programmatically. For example, it could be used to:
-
- * given a set of optional search parameters, build a search query dynamically depending on which parameters are provided;
- * given a Java class, generate the CRUD queries that map instances of that class to a Cassandra table.
+The query builder is a utility to generate CQL queries programmatically. Query Builder, which is more secure than using strings and saves us from potential CQL injection attacks.Add the following code to `executeQueryBuilder()` to insert a user.
 ```java
-Insert insert = insertInto("users")
-                .value("firstname", literal("Cornelia"))
-                .value("lastname", literal("Grimsmo"))
+// Insert one record into the users table
+        Insert insert = insertInto("users")
+                .value("firstname", literal("Therese"))
+                .value("lastname", literal("Fredriksen"))
                 .value("age", literal(26))
-                .value("email", literal("cornelia@example.com"))
+                .value("email", literal("therese@example.com"))
                 .value("city", literal("Oslo"));
 
 
         SimpleStatement statement = insert.build();
 
         session.execute(statement);
+
+        // Use select to get the user we just entered
+        Select select = selectFrom("users").all().whereColumn("lastname").isEqualTo(literal("Fredriksen"));
+
+        SimpleStatement stmt = select.build();
+
+        // Show results
+        ResultSet rs = session.execute(stmt);
+        for (Row row : rs) {
+            System.out.format("Output from QueryBuilder: %s %d\n", row.getString("firstname"), row.getInt("age"));
+        }
 ```
 
 ## Batch Statements
-Use BatchStatement to execute a set of queries as an atomic operation. Batches can contain any combination of simple statements and bound statements.
+Use BatchStatement to execute a set of queries as an atomic operation. Batches can contain any combination of simple statements and bound statements. Add the following code to `executeBatchStatement()` 
 ```java
+// Create simple statement to insert a user
 SimpleStatement simpleInsert =
-                SimpleStatement.newInstance(
-                        "INSERT INTO demo.users (lastname, age, city, email, firstname) VALUES ('Hicks', 28, 'Park City', 'raquelle@example.com', 'Raquelle')");
+        SimpleStatement.newInstance(
+                "INSERT INTO demo.users (lastname, age, city, email, firstname) VALUES ('Hicks', 28, 'Denver', 'raquelle@example.com', 'Raquelle')");
 
-        PreparedStatement preparedInsert =
-                session.prepare(
-                        "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
-                                + "VALUES (?,?,?,?,?);");
+// Create prepared statement to insert a user
+PreparedStatement preparedInsert =
+        session.prepare(
+                "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
+                        + "VALUES (?,?,?,?,?);");
+
+// Create batch statement
+BatchStatement batch =
+        BatchStatement.builder(LOGGED)
+                .addStatement(simpleInsert)
+                .addStatement(preparedInsert.bind("Jansson", 30, "Stockholm", "linda@example.com", "Linda"))
+                .addStatement(preparedInsert.bind("Gutermuth", 64, "Munich", "david@example.com", "David"))
+                .addStatement(preparedInsert.bind("Robinson", 21, "Toronto", "sarah@example.com", "Sarah"))
+                .build();
 
 
-        BatchStatement batch =
-                BatchStatement.builder(LOGGED)
-                        .addStatement(simpleInsert)
-                        .addStatement(preparedInsert.bind("Juhola", 30, "Stockholm", "linda@example.com", "Linda"))
-                        .addStatement(preparedInsert.bind("Marx", 64, "Trier", "karl@example.com", "Karl"))
-
-                        .build();
-
-
-        session.execute(batch);
+session.execute(batch);
 ```        
+ Finally, uncomment the the final SELECT statment code in the main method to see all the users you have inserted into the table.
+ 
+ ```
+  /*
+            ResultSet results = session.execute("SELECT * FROM users");
+            for (Row row : results) {
+                System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
+                        row.getString("city"), row.getString("email"), row.getString("firstname"));
+                } 
+     */
+```
