@@ -34,14 +34,14 @@ datastax-java-driver {
 
 ## Simple Statements
 In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. You can use SimpleStatement for queries that will be executed only once.  Now that you are connected to the “demo” keyspace, let’s insert a user into the “users” table. Add the following lines of code to the main method.
-```
+```java
 // Insert one record into the users table
 session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");
 ```
 
 Using the Java driver, we can easily pull the user back out 
 
-```
+```java
 // Use select to get the user we just entered
 ResultSet rs = session.execute("SELECT * FROM users WHERE lastname='Jones'");
 for (Row row : rs) {
@@ -50,7 +50,7 @@ System.out.format("%s %d\n", row.getString("firstname"), row.getInt("age"));
 ```
 
 Perhaps it is the user's birthday, so we are going to update their age.
-```
+```java
 // Update the same user with a new age
 session.execute("update users set age = 36 where lastname = 'Jones'");
 // Select and show the change
@@ -61,7 +61,7 @@ System.out.format("%s %d\n", row.getString("firstname"), row.getInt("age"));
 ```
 
 Now let’s delete Bob from the table. Then we can print out all the rows. You’ll notice that Bob’s information no longer comes back after being deleted (others might, if you have inserted users previously).
-```
+```java
 // Delete the user from the users table
 session.execute("DELETE FROM users WHERE lastname = 'Jones'");
 // Show that the user is gone
@@ -142,12 +142,12 @@ session.execute(batch);
 ```        
  Finally, uncomment the the final SELECT statment code in the main method to see all the users you have inserted into the table.
  
- ```
+ ```java
   /*
-            ResultSet results = session.execute("SELECT * FROM users");
-            for (Row row : results) {
-                System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
-                        row.getString("city"), row.getString("email"), row.getString("firstname"));
-                } 
+  ResultSet results = session.execute("SELECT * FROM users");
+  for (Row row : results) {
+      System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
+              row.getString("city"), row.getString("email"), row.getString("firstname"));
+      } 
      */
 ```
