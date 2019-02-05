@@ -15,7 +15,7 @@ For this demo, we’re going to be creating a simple console application. This J
             <version>4.0.0-beta3</version>
         </dependency>
         
-The `resources/users.cqlusers.cql` file provides the schema used for this project.
+The `resources/users.cql` file provides the schema used for this project.
 
 ## Connect to your Cassandra cluster
 
