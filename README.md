@@ -149,5 +149,5 @@ session.execute(batch);
       System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
               row.getString("city"), row.getString("email"), row.getString("firstname"));
       } 
-     */
+   */
 ```
