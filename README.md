@@ -2,7 +2,7 @@
 This repository was created as a guide to help Apache Cassandra users get started with the Datastax Java Driver
 
 ## Overview
-For this demo, we’re going to be creating a simple console application. This project was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Querty Builder libraries in your POM file. 
+For this demo, we’re going to be creating a simple console application. This project was created with IntelliJ and uses Maven to manage dependencies. You will need both the Java Driver core and Query Builder libraries in your POM file. 
 
      <dependency>
             <groupId>com.datastax.oss</groupId>
@@ -15,11 +15,11 @@ For this demo, we’re going to be creating a simple console application. This p
             <version>4.0.0-beta3</version>
         </dependency>
         
-The `users.cql` file provides the schema used for this project.
+The `resources/users.cqlusers.cql` file provides the schema used for this project.
 
 ## Connect to your Cassandra cluster
 
-The entry point to your Cassandra cluster is through the `CqlSession`. It holds the known state of the actual Cassandra cluster, and is what you use to execute queries.`CqlSession.builder()` provides a fluent API to create an instance programmatically. Get a session connecting to the “demo” keyspace. To the `getSession()` method, add:
+The entry point to your Cassandra cluster is through the `CqlSession`. It holds the known state of the actual Cassandra cluster, and is what you use to execute queries.`CqlSession.builder()` provides a fluent API to create an instance programmatically. Get a session connecting to the “demo” keyspace. To the `getSession()` method in `CassandraSession.java`, add:
 ```java
 CqlSession session = CqlSession.builder().build();
 ```
@@ -33,7 +33,7 @@ datastax-java-driver {
 ```
 
 ## Simple Statements
-In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. You can use SimpleStatement for queries that will be executed only once.  Now that you are connected to the “demo” keyspace, let’s insert a user into the “users” table. Add the following lines of code to the main method.
+In this sample project, we will manipulate enteries in a simple `users` table, using the Java driver. You can use SimpleStatement for queries that will be executed only once.  Now that you are connected to the “demo” keyspace, let’s insert a user into the “users” table. Add the following lines of code to the main method in `CassandraTest.java`.
 ```java
 // Insert one record into the users table
 session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");
@@ -87,7 +87,7 @@ PreparedStatement prepared  = session.prepare(
         session.execute(bound);
 ```
 ## Query Builder
-The query builder is a utility to generate CQL queries programmatically. Query Builder, which is more secure than using strings and saves us from potential CQL injection attacks.Add the following code to `executeQueryBuilder()` to insert a user.
+The query builder is a utility to generate CQL queries programmatically. Query Builder, which is more secure than using strings and saves us from potential CQL injection attacks.Add the following code to `executeQueryBuilder()` in `QueryBuilder.java` to insert a user.
 ```java
 // Insert one record into the users table
         Insert insert = insertInto("users")
@@ -115,7 +115,7 @@ The query builder is a utility to generate CQL queries programmatically. Query B
 ```
 
 ## Batch Statements
-Use BatchStatement to execute a set of queries as an atomic operation. Batches can contain any combination of simple statements and bound statements. Add the following code to `executeBatchStatement()` 
+Use BatchStatement to execute a set of queries as an atomic operation. Batches can contain any combination of simple statements and bound statements. Add the following code to `executeBatchStatement()` in `Batches.java`.
 ```java
 // Create simple statement to insert a user
 SimpleStatement simpleInsert =
