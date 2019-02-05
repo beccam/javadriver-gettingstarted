@@ -11,7 +11,7 @@ public class CassandraSession {
 
             CqlSession getSession() {
 
-                CqlSession session = CqlSession.builder().build();
+             // TO DO: Create the session
 
                 return session;
            }
