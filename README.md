@@ -23,7 +23,7 @@ The entry point to your Cassandra cluster is through the `CqlSession`. It holds 
 ```java
 CqlSession session = CqlSession.builder().build();
 ```
-the `application.conf` file contains driver configurations (and defaults that we want to override). Here is where we set the
+the `resources/application.conf` file contains driver configurations (and defaults that we want to override). Here is where we set the
 `demo` keyspace we will be connecting to with our session.
 
 ```
