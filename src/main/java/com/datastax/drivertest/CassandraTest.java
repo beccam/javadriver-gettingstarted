@@ -61,13 +61,14 @@ public class CassandraTest {
         inserts.executeBatchStatement();
 
      /*
-            ResultSet results = session.execute("SELECT * FROM users");
-            for (Row row : results) {
-                System.out.format("%s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
-                        row.getString("city"), row.getString("email"), row.getString("firstname"));
+        ResultSet results = session.execute("SELECT * FROM users");
+        for (Row row : results) {
+            System.out.format("user table entry: %s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),
+                    row.getString("city"), row.getString("email"), row.getString("firstname"));
 
-                }
+            }
      */
+        session.close();
         }
     }
 
