@@ -12,26 +12,42 @@ public class CassandraTest {
 
         CqlSession session = test1.getSession();
 
-        // TO DO: Insert one record into the users table
+        // Insert one record into the users table
+        session.execute("INSERT INTO users (lastname, age, city, email, firstname) VALUES ('Jones', 35, 'Austin', 'bob@example.com', 'Bob')");
+
+        // Use select to get the user we just entered
+        ResultSet rs = session.execute("SELECT * FROM users WHERE lastname='Jones'");
+        for (Row row : rs) {
+            System.out.format("Output after simple insert: %s %d\n", row.getString("firstname"), row.getInt("age"));
+        }
+
+        // Update the same user with a new age
+        session.execute("update users set age = 36 where lastname = 'Jones'");
+
+        // Select and show the change
+        rs = session.execute("select * from users where lastname='Jones'");
+        for (Row row : rs) {
+            System.out.format("Output after simple update: %s %d\n", row.getString("firstname"), row.getInt("age"));
+        }
+
+        // Delete the user from the users table
+        session.execute("DELETE FROM users WHERE lastname = 'Jones'");
+        // Show that the user is gone
+        rs = session.execute("select * from users where lastname='Jones'");
+        for (Row row : rs) {
+            System.out.format("Output after simple delete: %s %d %s %s %s\n", row.getString("lastname"), row.getInt("age"),  row.getString("city"), row.getString("email"), row.getString("firstname"));
+        }
 
 
-        // TO DO: Use select to get the user we just entered
+        // Insert one record into the users table
+        PreparedStatement prepared  = session.prepare(
 
+                "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
+                        + "VALUES (?,?,?,?,?);");
 
-        // TO DO: Update the same user with a new age
+        BoundStatement bound = prepared.bind("Walsh", 40, "Santa Fe", "kate@example.com", "Kate");
 
-
-        // TO DO: Select and show the change
-
-
-        // TO DO: Delete the user from the users table
-
-
-        // TO DO: Show that the user is gone
-
-
-        // TO DO: Insert one record into the users table
-
+        session.execute(bound);
 
 
         QueryBuilder insert = new QueryBuilder();
@@ -52,8 +68,6 @@ public class CassandraTest {
 
                 }
      */
-
-     session.close();
         }
     }
 

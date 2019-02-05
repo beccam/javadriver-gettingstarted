@@ -21,17 +21,30 @@ public class QueryBuilder {
 
         CqlSession session = test1.getSession();
 
-        // TO DO: Insert one record into the users table
+        // Insert one record into the users table
+        Insert insert = insertInto("users")
+                .value("firstname", literal("Therese"))
+                .value("lastname", literal("Fredriksen"))
+                .value("age", literal(26))
+                .value("email", literal("therese@example.com"))
+                .value("city", literal("Oslo"));
 
 
+        SimpleStatement statement = insert.build();
 
-        // TO DO: Use select to get the user we just entered
+        session.execute(statement);
 
+        // Use select to get the user we just entered
+        Select select = selectFrom("users").all().whereColumn("lastname").isEqualTo(literal("Fredriksen"));
 
-        // TO DO: Show results
+        SimpleStatement stmt = select.build();
 
+        // Show results
+        ResultSet rs = session.execute(stmt);
+        for (Row row : rs) {
+            System.out.format("Output from QueryBuilder: %s %d\n", row.getString("firstname"), row.getInt("age"));
         }
 
 
     }
-
+}
