@@ -8,7 +8,7 @@ This repository was created as a guide to help Apache Cassandra users get starte
 
 ## Overview
 
-!(images/layout.png)
+(images/layout.png)
 
 For this demo, we’re going to be creating a simple console application. This Java project was created with IntelliJ and uses Maven to manage dependencies, with Apache Cassandra 3.11.3 as the database. You will need both the Java Driver core and Query Builder libraries in your POM file. 
 
