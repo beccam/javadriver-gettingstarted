@@ -3,14 +3,13 @@ This repository was created as a guide to help Apache Cassandra users get starte
 
 ## Prerequisites
 
-* [Apache Cassandra®] \(2.1+)
+* Apache Cassandra® 2.1+
+* Maven
 
 ## Overview
 For this demo, we’re going to be creating a simple console application. This Java project was created with IntelliJ and uses Maven to manage dependencies, with Apache Cassandra 3.11.3 as the database. You will need both the Java Driver core and Query Builder libraries in your POM file. 
 
-| pom.xml |
-|---|
- |    <dependency>
+   <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
             <version>4.0.0-beta3</version>
@@ -19,7 +18,7 @@ For this demo, we’re going to be creating a simple console application. This J
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-query-builder</artifactId>
             <version>4.0.0-beta3</version>
-        </dependency>|
+        </dependency>
         
 The `resources/users.cql` file provides the schema used for this project.
 
