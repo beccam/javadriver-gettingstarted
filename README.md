@@ -15,12 +15,12 @@ For this demo, we’re going to be creating a simple console application. This J
    <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
-            <version>4.0.0-beta3</version>
+            <version>4.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-query-builder</artifactId>
-            <version>4.0.0-beta3</version>
+            <version>4.0.0</version>
         </dependency>
         
 The `resources/users.cql` file provides the schema used for this project.
@@ -87,12 +87,12 @@ Use prepared statements for queries that are executed multiple times in your app
 // Insert one record into the users table
 PreparedStatement prepared  = session.prepare(
 
-                "INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
-                        + "VALUES (?,?,?,?,?);");
+"INSERT INTO demo.users" + "(lastname, age, city, email, firstname)"
+      + "VALUES (?,?,?,?,?);");
 
-        BoundStatement bound = prepared.bind("Walsh", 40, "Santa Fe", "kate@example.com", "Kate");
+BoundStatement bound = prepared.bind("Walsh", 40, "Santa Fe", "kate@example.com", "Kate");
 
-        session.execute(bound);
+session.execute(bound);
 ```
 ## Query Builder
 The query builder is a utility to generate CQL queries programmatically. Query Builder, which is more secure than using strings and saves us from potential CQL injection attacks.Add the following code to `executeQueryBuilder()` in `QueryBuilder.java` to insert a user.
