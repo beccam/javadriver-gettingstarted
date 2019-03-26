@@ -106,20 +106,20 @@ The query builder is a utility to generate CQL queries programmatically. Query B
                 .value("city", literal("Oslo"));
 
 
-        SimpleStatement statement = insert.build();
+SimpleStatement statement = insert.build();
 
-        session.execute(statement);
+session.execute(statement);
 
-        // Use select to get the user we just entered
-        Select select = selectFrom("users").all().whereColumn("lastname").isEqualTo(literal("Fredriksen"));
+// Use select to get the user we just entered
+Select select = selectFrom("users").all().whereColumn("lastname").isEqualTo(literal("Fredriksen"));
 
-        SimpleStatement stmt = select.build();
+SimpleStatement stmt = select.build();
 
-        // Show results
-        ResultSet rs = session.execute(stmt);
-        for (Row row : rs) {
-            System.out.format("Output from QueryBuilder: %s %d\n", row.getString("firstname"), row.getInt("age"));
-        }
+// Show results
+ResultSet rs = session.execute(stmt);
+for (Row row : rs) {
+   System.out.format("Output from QueryBuilder: %s %d\n", row.getString("firstname"), row.getInt("age"));
+}
 ```
 
 ## Batch Statements
